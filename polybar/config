@@ -1,0 +1,321 @@
+;==========================================================
+;
+; THIS IS AN EXAMPLE CONFIGURATION FILE!
+; IT IS NOT SUPPOSED TO WORK OUT OF THE BOX SINCE IS CONTAINS
+; SETTINGS THAT ARE SPECIFIC TO THE MACHINE WHICH WAS USED
+; TO GENERATE IT.
+; Please refer to the web documentation hosted at:
+; https://github.com/polybar/polybar#configuration
+; and
+; https://github.com/polybar/polybar/wiki/Configuration
+; if you want to automatically generate one for you.
+;
+;==========================================================
+;
+;
+;   ██████╗  ██████╗ ██╗  ██╗   ██╗██████╗  █████╗ ██████╗
+;   ██╔══██╗██╔═══██╗██║  ╚██╗ ██╔╝██╔══██╗██╔══██╗██╔══██╗
+;   ██████╔╝██║   ██║██║   ╚████╔╝ ██████╔╝███████║██████╔╝
+;   ██╔═══╝ ██║   ██║██║    ╚██╔╝  ██╔══██╗██╔══██║██╔══██╗
+;   ██║     ╚██████╔╝███████╗██║   ██████╔╝██║  ██║██║  ██║
+;   ╚═╝      ╚═════╝ ╚══════╝╚═╝   ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝
+;
+;
+;   To learn more about how to configure Polybar
+;   go to https://github.com/polybar/polybar
+;
+;   The README contains a lot of information
+;
+;==========================================================
+
+[colors]
+background = #292D3E
+second-background = #34324A
+foreground = #A6ACCD
+selection-background = #484f72
+selection-foreground = #FFFFFF
+label-focused-underline = #FFFFFF
+comment = #676E95
+cyan = #89DDFF
+green = #C3E88D
+orange = #F78C6C
+purple = #C792EA
+red = #F07178
+yellow = #FFCB6B
+blue = #82AAFF
+gray = #676E95
+error = #FF5370
+links = #80CBC4
+
+[bar/main]
+width = 100%
+height = 27
+;offset-x = 1%
+;offset-y = 1%
+radius = 0
+fixed-center = true
+
+background = ${colors.background}
+foreground = ${colors.foreground}
+
+border-size = 0
+border-color = #00000000
+
+font-0 = FiraCode Nerd Font:size=10;2
+font-1 = Font Awesome 6 Brands:size=10;2
+
+modules-left = i3 
+modules-center = date 
+modules-right = wlan xbacklight pulseaudio battery
+
+
+separator = |
+separator-foreground = ${colors.comment}
+
+
+tray-position = right
+tray-padding = 2
+tray-background = ${colors.second-background}
+
+cursor-click = pointer
+cursor-scroll = ns-resize
+
+[module/battery]
+type = custom/script
+exec = ~/.config/polybar/script_module/battery.sh
+click-left = notify-send -t 3000 "$(acpi | cut -c 12-99)"
+format-padding=2
+
+
+[module/xwindow]
+type = internal/xwindow
+label = %title:0:30:...%
+
+
+[module/i3]
+type = internal/i3
+format = <label-state> <label-mode>
+label-mode-foreground = ${colors.foreground}
+format-font = 1
+index-sort = true
+wrapping-scroll = false
+
+ws-icon-0 = 1;
+ws-icon-1 = 2;  
+ws-icon-2 = 3;  
+ws-icon-3 = 4;4
+ws-icon-4 = 5;5
+ws-icon-5 = 6;6
+ws-icon-6 = 7;7
+ws-icon-7 = 8;   
+ws-icon-8 = 9;   
+ws-icon-9 = 10;   
+ws-icon-default =  
+
+; Only show workspaces on the same output as the bar
+;pin-workspaces = true
+
+label-mode-padding = 4
+label-mode-background = ${colors.selection}
+
+; focused = Active workspace on focused monitor
+label-focused = "%icon%"
+label-focused-background = ${colors.selection-background}
+label-focused-padding = 4
+
+; unfocused = Inactive workspace on any monitor
+label-unfocused = %icon%
+label-unfocused-padding = 4
+
+; visible = Active workspace on unfocused monitor
+label-visible = %icon%
+label-visible-background = ${colors.second-background}
+label-visible-underline = ${self.label-focused-underline}
+label-visible-padding = ${self.label-focused-padding}
+
+; urgent = Workspace with urgency hint set
+label-urgent = %icon%
+label-urgent-background = ${colors.error}
+label-urgent-padding = 4
+
+; Separator in between workspaces
+; label-separator = |
+
+
+[module/mpd]
+type = internal/mpd
+format-online = <label-song>  <icon-prev> <icon-stop> <toggle> <icon-next>
+
+;icon-prev = 
+;icon-stop = 
+icon-play = 
+;icon-pause = 
+;icon-next = 
+;icon-play = ⏵
+icon-pause = ⏸
+icon-stop = ⏹
+icon-prev = ⏮
+icon-next = ⏭
+
+label-song-maxlen = 25
+label-song-ellipsis = true
+
+[module/xbacklight]
+type = internal/xbacklight
+format-prefix = " "
+label = %percentage%%
+format-padding = 2
+
+
+[module/cpu]
+type = internal/cpu
+interval = 1
+format-prefix = "  "
+format-prefix-foreground = ${colors.orange}
+format-underline = #f90000
+label = %percentage%%
+format-padding = 2
+
+[module/memory]
+type = internal/memory
+interval = 1
+format-padding = 2
+format-prefix = "  "
+format-prefix-foreground = ${colors.links}
+label = %percentage_used%%
+
+[module/wlan]
+type = internal/network
+interface = wlan0
+interval = 3.0
+
+format-connected = <ramp-signal> <label-connected>
+format-connected-underline = #9f78e1
+label-connected = %essid%
+
+format-disconnected =
+;format-disconnected = <label-disconnected>
+;format-disconnected-underline = ${self.format-connected-underline}
+;label-disconnected = %ifname% disconnected
+;label-disconnected-foreground = ${colors.foreground}
+
+ramp-signal-0 = ﲁ
+ramp-signal-1 = 說
+ramp-signal-2 = 說
+ramp-signal-3 = 說
+ramp-signal-4 = 
+ramp-signal-foreground = ${colors.foreground}
+format-connected-padding = 2
+
+
+[module/eth]
+type = internal/network
+interface = enp0s31f6
+interval = 3.0
+
+format-connected-underline = #55aa55
+format-connected-prefix = " "
+format-connected-prefix-foreground = ${colors.foreground}
+label-connected = %local_ip%
+
+format-disconnected =
+;format-disconnected = <label-disconnected>
+;format-disconnected-underline = ${self.format-connected-underline}
+;label-disconnected = %ifname% disconnected
+;label-disconnected-foreground = ${colors.foreground}
+
+[module/date]
+type = internal/date
+interval = 1
+
+date = " %d/%m/%Y"
+
+time = %H:%M
+
+;format-prefix = " "
+format-padding = 2
+format-font = 4
+
+label = %time%
+label-font = 2
+
+[module/pulseaudio]
+type = internal/pulseaudio
+click-right = pavucontrol
+
+format-volume = <ramp-volume>  <label-volume> 
+format-volume-padding = 2
+format-volume-font = 1
+label-volume = %percentage%%
+
+ramp-volume-0 =  
+;ramp-volume-foreground = ${colors.purple}
+
+label-muted =  
+;label-muted-foreground = ${colors.comment}
+label-muted-padding = 2
+label-muted-font = 1
+
+;bar-volume-width = 10
+;bar-volume-foreground-0 = #55aa55
+;bar-volume-foreground-1 = #55aa55
+;bar-volume-foreground-2 = #55aa55
+;bar-volume-foreground-3 = #55aa55
+;bar-volume-foreground-4 = #55aa55
+;bar-volume-foreground-5 = #f5a70a
+;bar-volume-foreground-6 = #ff5555
+bar-volume-gradient = false
+bar-volume-indicator = |
+bar-volume-indicator-font = 2
+bar-volume-fill = ─
+bar-volume-fill-font = 2
+bar-volume-empty = ─
+bar-volume-empty-font = 2
+bar-volume-empty-foreground = ${colors.foreground}
+
+[module/powermenu]
+type = custom/menu
+
+expand-right = true
+
+format-spacing = 2
+
+label-open = "    " 
+label-open-foreground = ${colors.red}
+label-close =  cancel
+label-close-foreground = ${colors.green}
+label-separator = |
+label-separator-foreground = ${colors.yellow}
+
+menu-0-0 = logout
+menu-0-0-foreground = ${colors.red}
+menu-0-0-exec = menu-open-3
+menu-0-1 = reboot
+menu-0-1-foreground = ${colors.red}
+menu-0-1-exec = menu-open-1
+menu-0-2 = shutdown
+menu-0-2-foreground = ${colors.red}
+menu-0-2-exec = menu-open-2
+
+menu-1-0 = reboot
+menu-1-0-foreground = ${colors.red}
+menu-1-0-exec = sudo reboot
+
+menu-2-0 = shutdown
+menu-2-0-exec = sudo shutdown now
+menu-2-0-foreground = ${colors.red}
+
+menu-3-0 = logout
+menu-3-0-exec = i3-msg exit
+menu-3-0-foreground = ${colors.red}
+
+[module/player]
+type = custom/script
+exec = ~/.config/polybar/script_module/player.py -f '{:t20:{title}:} %{A1:~/.config/polybar/script_module/player.py previous:}  %{A} %{A1:~/.config/polybar/script_module/player.py pause:}  %{A} %{A1:~/.config/polybar/script_module/player.py next:}  %{A}'
+interval = 1
+tail = true
+
+[settings]
+screenchange-reload = true
+
+

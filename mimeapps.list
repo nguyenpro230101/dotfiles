@@ -1,0 +1,6 @@
+[Added Associations]
+text/plain=visual-studio-code.desktop;
+
+[Default Applications]
+x-scheme-handler/http=gogle-chrome-stable.desktop
+x-scheme-handler/https=gogle-chrome-stable.desktop
